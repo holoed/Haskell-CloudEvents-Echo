@@ -10,6 +10,7 @@ import Web.Scotty         (ActionM, ScottyM, scotty)
 import Web.Scotty.Trans
 import Network.Wai.Middleware.RequestLogger
 import Network.HTTP.Types.Status
+import Emitter (emit)
 
 main :: IO ()
 main = do
@@ -26,4 +27,5 @@ route = do
         liftIO (putStrLn $ show hs)
         --  code <- param "data" :: ActionM String
         --  liftIO $ putStrLn code
+        liftIO $ emit
         status status204
