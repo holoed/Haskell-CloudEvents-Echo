@@ -10,6 +10,7 @@ import Web.Scotty         (ActionM, ScottyM, scotty)
 import Web.Scotty.Trans
 import Network.Wai.Middleware.RequestLogger
 import Network.HTTP.Types.Status
+import Data.Aeson (Object)
 import Emitter (emit)
 
 main :: IO ()
@@ -25,6 +26,7 @@ route = do
     post "/" $ do
         hs <- headers
         liftIO (putStrLn $ show hs)
+        value <- jsonData :: ActionM Object
         --  code <- param "data" :: ActionM String
-        --  liftIO $ putStrLn code
+        liftIO $ putStrLn (show value)
         status status204
