@@ -33,7 +33,9 @@ executable CloudEventsEcho
                        http-conduit,
                        bytestring,
                        aeson,
-                       yaml
+                       yaml,
+                       random,
+                       uuid
   hs-source-dirs:      src
   build-tools:        
   default-language:    Haskell2010
