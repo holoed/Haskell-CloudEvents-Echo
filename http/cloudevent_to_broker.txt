@@ -1,0 +1,31 @@
+ docker build -t pentedm/http_cli .
+ docker push pentedm/http_cli
+
+kubectl apply -f - << EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: bash
+  name: http
+spec:
+  containers:
+    # This could be any image that we can SSH into and has curl.
+  - image: pentedm/http_cli
+    imagePullPolicy: IfNotPresent
+    name: http
+    resources: {}
+    stdin: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    tty: true
+EOF
+
+kubectl exec --stdin --tty http -- /bin/bash
+
+http -v http://broker-ingress.knative-eventing.svc.cluster.local/default/default \
+Ce-Id:43 \
+Ce-Specversion:1.0 \
+Ce-Type:com.example.sockeye \
+Ce-Source:/example/source   \
+message="This is a Test"
