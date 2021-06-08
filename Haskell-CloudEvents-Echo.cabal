@@ -1,0 +1,26 @@
+cabal-version:      2.4
+name:               Haskell-CloudEvents-Echo
+version:            0.1.0.0
+
+author:             Edmondo Pentangelo
+maintainer:         edmondo@gmail.com
+
+extra-source-files:
+    README.md
+
+executable Haskell-CloudEvents-Echo
+    main-is:       Main.hs
+    other-modules: Emitter
+    build-depends:    base ^>=4.14.1.0,
+                      aeson,
+                      random,
+                      uuid,
+                      yaml,
+                      http-types,
+                      http-conduit,
+                      bytestring,
+                      scotty,
+                      text,
+                      wai-extra
+    hs-source-dirs:   src
+    default-language: Haskell2010

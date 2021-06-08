@@ -1,15 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Control.Monad.IO.Class
-import Data.Maybe
-import Data.Text.Lazy     (Text)
-import Data.Text.Lazy
+import Control.Monad.IO.Class ( MonadIO(liftIO) )
+import Data.Maybe ( fromMaybe )
+import Data.Text.Lazy ()
 import System.Environment (lookupEnv)
 import Web.Scotty         (ActionM, ScottyM, scotty)
 import Web.Scotty.Trans
-import Network.Wai.Middleware.RequestLogger
-import Network.HTTP.Types.Status
+    ( jsonData, headers, status, post, middleware )
+import Network.Wai.Middleware.RequestLogger ( logStdoutDev )
+import Network.HTTP.Types.Status ( status204 )
 import Data.Aeson (Object)
 import Emitter (emit)
 
@@ -21,12 +21,12 @@ main = do
   scotty p route
 
 route :: ScottyM()
-route = do 
+route = do
     middleware logStdoutDev
     post "/" $ do
         hs <- headers
-        liftIO (putStrLn $ show hs)
+        liftIO (print hs)
         value <- jsonData :: ActionM Object
         --  code <- param "data" :: ActionM String
-        liftIO $ putStrLn (show value)
+        liftIO $ print value
         status status204

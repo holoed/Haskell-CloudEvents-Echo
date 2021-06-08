@@ -2,15 +2,19 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Emitter where
 
-import           Data.Aeson
+import Data.Aeson ( FromJSON, ToJSON )
 import qualified Data.ByteString.Char8 as S8
 import qualified Data.Yaml             as Yaml
-import           Network.HTTP.Simple
-import           GHC.Generics
-import           System.Random
-import           Data.UUID
+import Network.HTTP.Simple
+    ( addRequestHeader,
+      getResponseStatusCode,
+      httpLBS,
+      setRequestBodyJSON )
+import GHC.Generics ( Generic )
+import System.Random ( getStdGen, Random(random) )
+import Data.UUID ( toString )
 
-data Message = Message { msg :: String } deriving (Generic)
+newtype Message = Message { msg :: String } deriving (Generic)
 
 instance FromJSON Message
 instance ToJSON Message

@@ -1,18 +1,17 @@
-FROM haskell:8.2.2
+FROM haskell:8.10.4
 
 RUN cabal update
 
 # Add .cabal file
-ADD ./CloudEventsEcho.cabal /opt/CloudEventsEcho.cabal
+ADD ./Haskell-CloudEvents-Echo.cabal /opt/Haskell-CloudEvents-Echo.cabal
 
 # Docker will cache this command as a layer, freeing us up to
 # modify source code without re-installing dependencies
-RUN cd /opt && cabal install scotty
-RUN cd /opt && cabal install --only-dependencies -j4
+RUN cd /opt && cabal new-build --only-dependencies -j4
 
 # Add and Install Application Code
 ADD . /opt
-RUN cd /opt && cabal configure && cabal build CloudEventsEcho && cabal install
+RUN cd /opt && cabal configure && cabal build && cabal install
 
 # Add installed cabal executable to PATH
 ENV PATH /root/.cabal/bin:$PATH
@@ -20,4 +19,4 @@ ENV PATH /root/.cabal/bin:$PATH
 # Default Command for Container
 WORKDIR /opt
 
-ENTRYPOINT ["CloudEventsEcho"]
+ENTRYPOINT ["Haskell-CloudEvents-Echo"]
